@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by mateuszl on 22.09.2016.
+ * .........in development........
  */
 public interface QueryInterface {
 
