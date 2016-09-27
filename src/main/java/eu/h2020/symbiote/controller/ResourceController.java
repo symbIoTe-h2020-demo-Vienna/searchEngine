@@ -31,7 +31,7 @@ public class ResourceController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @RequestMapping(value="/search/platform/{id}", method= RequestMethod.GET)
+    @RequestMapping(value="/core_api/platforms/{id}", method= RequestMethod.GET)
     public @ResponseBody
     HttpEntity<Platform> findPlatform(@PathVariable(value = "id") String platformId) {
 
@@ -42,7 +42,7 @@ public class ResourceController {
         return new ResponseEntity<Platform>( foundPlatform, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/search/platform/{id}/sensors", method= RequestMethod.GET)
+    @RequestMapping(value="/core_api/platforms/{id}/sensors", method= RequestMethod.GET)
     public @ResponseBody
     HttpEntity<List<Sensor>> findSensors(@PathVariable(value = "id") String platformId) {
 
@@ -56,24 +56,7 @@ public class ResourceController {
         return new ResponseEntity<List<Sensor>>( foundSensors, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/search/platforms/{id}/sensor", method= RequestMethod.POST)
-    public @ResponseBody
-    HttpEntity<String> addPlatform(@PathVariable(value="id") String platformId, @RequestBody Sensor sensor) {
-        System.out.println( "Adding Sensor");
-
-        Platform platform = platformRepo.findOne(platformId.toString());
-
-        sensor.setPlatform(platform);
-
-        Sensor savedSensor = sensorRepo.save(sensor);
-        System.out.println( "Platform added! : " + savedSensor + ". Sending message...");
-
-//        return new ResponseEntity<Sensor>( savedSensor, HttpStatus.OK);
-        System.out.println("Response send with id: " + savedSensor.getId());
-        return new ResponseEntity<String>( savedSensor.getId(), HttpStatus.OK);
-    }
-
-    @RequestMapping(value={"/search/sensor","/search/platform", "/search"})
+    @RequestMapping(value={"sensor", "/platform", "/core_api/sensors","/core_api/platforms", "/core_api"})
     public @ResponseBody
     HttpEntity<String> error() {
         String message = "Method not allowed";
