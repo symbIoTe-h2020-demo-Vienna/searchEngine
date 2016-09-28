@@ -64,26 +64,6 @@
 			<version>2.7</version>
 		</dependency>
 
-		<!-- Query DSL-->
-		<!-- https://mvnrepository.com/artifact/com.mysema.querydsl/querydsl-core -->
-		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-core</artifactId>
-			<version>3.7.4</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.mysema.querydsl/querydsl-mongodb -->
-		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-mongodb</artifactId>
-			<version>3.7.4</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.mysema.querydsl/querydsl-collections -->
-		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-collections</artifactId>
-			<version>3.7.4</version>
-		</dependency>
-
 	</dependencies>
 
 	<dependencyManagement>
@@ -104,38 +84,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
-			<!--  Mongo DSL plugin  -->
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>apt-maven-plugin</artifactId>
-				<version>1.0.9</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>com.mysema.querydsl</groupId>
-						<artifactId>querydsl-apt</artifactId>
-						<version>LATEST</version>
-					</dependency>
-					<dependency>
-						<groupId>com.mysema.querydsl</groupId>
-						<artifactId>querydsl-mongodb</artifactId>
-						<classifier>apt</classifier>
-						<version>LATEST</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
 		</plugins>
 	</build>
 

@@ -31,19 +31,21 @@ public class ResourceController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @RequestMapping(value="/core_api/platforms/{id}", method= RequestMethod.GET)
-    public @ResponseBody
+    @RequestMapping(value = "/core_api/platforms/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
     HttpEntity<Platform> findPlatform(@PathVariable(value = "id") String platformId) {
 
         Platform foundPlatform = platformRepo.findOne(platformId);
 
         System.out.println("Response send with id: " + foundPlatform.getId());
 
-        return new ResponseEntity<Platform>( foundPlatform, HttpStatus.OK);
+        return new ResponseEntity<Platform>(foundPlatform, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/core_api/platforms/{id}/sensors", method= RequestMethod.GET)
-    public @ResponseBody
+    @RequestMapping(value = "/core_api/platforms/{id}/sensors", method = RequestMethod.GET)
+    public
+    @ResponseBody
     HttpEntity<List<Sensor>> findSensors(@PathVariable(value = "id") String platformId) {
 
         Query query = new Query();
@@ -53,13 +55,14 @@ public class ResourceController {
 
         System.out.println("Response send! Found sensors: ");
         System.out.println(foundSensors);
-        return new ResponseEntity<List<Sensor>>( foundSensors, HttpStatus.OK);
+        return new ResponseEntity<List<Sensor>>(foundSensors, HttpStatus.OK);
     }
 
-    @RequestMapping(value={"sensor", "/platform", "/core_api/sensors","/core_api/platforms", "/core_api"})
-    public @ResponseBody
-    HttpEntity<String> error() {
-        String message = "Method not allowed";
-        return new ResponseEntity<String>( message, HttpStatus.METHOD_NOT_ALLOWED);
-    }
+//    @RequestMapping(value = {"sensor", "/platform", "/core_api/sensors", "/core_api/platforms", "/core_api"})
+//    public
+//    @ResponseBody
+//    HttpEntity<String> error() {
+//        String message = "Method not allowed";
+//        return new ResponseEntity<String>(message, HttpStatus.METHOD_NOT_ALLOWED);
+//    }
 }

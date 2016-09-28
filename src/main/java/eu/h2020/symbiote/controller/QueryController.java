@@ -1,14 +1,15 @@
 package eu.h2020.symbiote.controller;
 
 import eu.h2020.symbiote.model.Sensor;
-import eu.h2020.symbiote.repository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,44 +22,50 @@ import java.util.stream.Collectors;
 public class QueryController {
 
     @Autowired
-    private SensorRepository sensorRepo;
+    private MongoTemplate mongoTemplate;
 
     @RequestMapping(value = "/core_api/resources", method = RequestMethod.GET)
     public
     @ResponseBody
-    HttpEntity<List<String>> queryResourcesWithParams(@RequestParam(value = "platform_id", required = false) String platform_id,
-                                                      @RequestParam(value = "owner", required = false) String owner,
-                                                      @RequestParam(value = "name", required = false) String name
+    HttpEntity<List<String>> searchResourcesByParams(@RequestParam(value = "platform_id", required = false) String platformId,
+                                                     @RequestParam(value = "platform_name", required = false) String platformName,
+                                                     @RequestParam(value = "owner", required = false) String owner,
+                                                     @RequestParam(value = "name", required = false) String name,
+                                                     @RequestParam(value = "id", required = false) String id,
+                                                     @RequestParam(value = "description", required = false) String description,
+                                                     @RequestParam(value = "location_name", required = false) String locationName,
+                                                     @RequestParam(value = "observed_property", required = false) String observedProperty
     ) {
+        Query query = new Query();
 
-        List<String> listOfResourcesIds = new ArrayList<>();
-        List<Sensor> listOfSensors = new ArrayList<>();
-        List<Sensor> listOfPossibleSensors = new ArrayList<>();
-
-        if (platform_id != null) {
-            if (listOfSensors.isEmpty()) {
-                listOfSensors.addAll(sensorRepo.findByPlatformId(platform_id));
-                listOfResourcesIds = getSensorsIds(listOfSensors);
-                System.out.println(listOfSensors);
-            }
+        if (platformId != null) {
+            query.addCriteria(Criteria.where("platform.id").is(platformId));
+        }
+        if (platformName != null) {
+            query.addCriteria(Criteria.where("platform.name").is(platformName));
         }
         if (owner != null) {
-            if (listOfSensors.isEmpty()) {
-                System.out.println("111111111111111111");
-                listOfSensors.addAll(sensorRepo.findByOwner(owner));
-                listOfResourcesIds = getSensorsIds(listOfSensors);
-            } else {
-                listOfPossibleSensors.addAll(sensorRepo.findByOwner(owner));
-                System.out.println(sensorRepo.findByOwner(owner));
-            }
+            query.addCriteria(Criteria.where("owner").is(owner));
         }
         if (name != null) {
-            if (listOfSensors.isEmpty())
-                listOfSensors.addAll(sensorRepo.findByName(name));
-            else
-                listOfSensors.retainAll(sensorRepo.findByName(name));
+            query.addCriteria(Criteria.where("name").is(name));
+        }
+        if (id != null) {
+            query.addCriteria(Criteria.where("id").is(id));
+        }
+        if (description != null) {
+            query.addCriteria(Criteria.where("description").is(description));
+        }
+        if (locationName != null) {
+            query.addCriteria(Criteria.where("location.name").is(locationName));
+        }
+        if (observedProperty != null) {
+            query.addCriteria(Criteria.where("observed_property").is(observedProperty));
         }
 
+        List<Sensor> listOfSensors = mongoTemplate.find(query, Sensor.class);
+
+        List<String> listOfResourcesIds = getSensorsIds(listOfSensors);
         return new ResponseEntity<List<String>>(listOfResourcesIds, HttpStatus.OK);
     }
 
@@ -67,20 +74,4 @@ public class QueryController {
                 .map(Sensor::getId)
                 .collect(Collectors.toList());
     }
-
-    @RequestMapping(value = "/core_api2/resources", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    HttpEntity<List<String>> queryResourcesWithParams2(@RequestParam(value = "platform_id", required = false) String platform_id,
-                                                      @RequestParam(value = "owner", required = false) String owner,
-                                                      @RequestParam(value = "name", required = false) String name
-    ) {
-
-        List<String> listOfResourcesIds = new ArrayList<>();
-
-
-
-        return new ResponseEntity<List<String>>(listOfResourcesIds, HttpStatus.OK);
-    }
 }
-
