@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @RepositoryRestResource(collectionResourceRel = "sensor", path = "sensor")
-public interface SensorRepository extends MongoRepository<Sensor, String> {
+public interface SensorRepository extends MongoRepository<Sensor, String>, SensorRepositoryCustom {
 
     @Query("{'platform.id' : ?0 }")
     public List<Sensor> findByPlatformId(@Param("platform_id") String platformId);
@@ -39,4 +39,5 @@ public interface SensorRepository extends MongoRepository<Sensor, String> {
 
     @Query("{'observedProperty' : ?0 }")
     public List<Sensor> findByObservedProperty(@Param("observed_property") String observedProperty);
+
 }

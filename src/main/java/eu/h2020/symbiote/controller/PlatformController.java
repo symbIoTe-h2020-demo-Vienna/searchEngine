@@ -20,7 +20,7 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
-public class ResourceController {
+public class PlatformController {
 
     @Autowired
     private PlatformRepository platformRepo;
@@ -43,7 +43,7 @@ public class ResourceController {
         return new ResponseEntity<Platform>(foundPlatform, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/core_api/platforms/{id}/sensors", method = RequestMethod.GET)
+    @RequestMapping(value = "/core_api/platforms/{id}/resources", method = RequestMethod.GET)
     public
     @ResponseBody
     HttpEntity<List<Sensor>> findSensors(@PathVariable(value = "id") String platformId) {
