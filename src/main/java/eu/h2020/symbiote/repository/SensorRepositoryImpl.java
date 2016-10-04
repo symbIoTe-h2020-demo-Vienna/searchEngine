@@ -45,7 +45,7 @@ public class SensorRepositoryImpl implements SensorRepositoryCustom {
             query.addCriteria(Criteria.where("location.name").is(locationName));
         }
         if (observedProperty != null) {
-            query.addCriteria(Criteria.where("observed_property").is(observedProperty));
+            query.addCriteria(Criteria.where("observedProperties").in(observedProperty));
         }
 
         query.fields().include("_id");
