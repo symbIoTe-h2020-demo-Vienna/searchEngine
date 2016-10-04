@@ -7,6 +7,9 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Created by Mael on 08/09/2016.
+ *
+ * for future use
+ *
  */
 public class ResourceCreatedConsumer extends SymbioteMessageConsumer<Sensor> {
 
@@ -30,6 +33,6 @@ public class ResourceCreatedConsumer extends SymbioteMessageConsumer<Sensor> {
     @Override
     protected void handleEventObject(Sensor deliveredObject) {
         System.out.println("Search received message about created resource with id: " + deliveredObject.getId());
-        //save (deliveredObject) in database
+        //save (deliveredObject) in database if there will be another database for search service
     }
 }

@@ -6,8 +6,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Created by mateuszl on 22.09.2016.
@@ -16,7 +14,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @SpringBootApplication
 public class SearchEngineApplication {
 
-    ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Config.xml");
     private static Log log = LogFactory.getLog(SearchEngineApplication.class);
 
     public static void main(String[] args) {
@@ -24,7 +21,7 @@ public class SearchEngineApplication {
         try {
             MessagingSubscriptions.subscribeForSearchService();
         } catch (Exception e) {
-            log.error("Error occured during subscribing from search service", e);
+            log.error("Error occured during subscribing to search service", e);
         }
     }
 }

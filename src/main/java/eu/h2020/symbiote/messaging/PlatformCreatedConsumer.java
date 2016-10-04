@@ -7,6 +7,9 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Created by Mael on 07/09/2016.
+ *
+ * for future use
+ *
  */
 public class PlatformCreatedConsumer extends SymbioteMessageConsumer<Platform> {
 
@@ -29,6 +32,6 @@ public class PlatformCreatedConsumer extends SymbioteMessageConsumer<Platform> {
     @Override
     protected void handleEventObject(Platform deliveredObject) {
         System.out.println("Search received message about created platform with id: " + deliveredObject.getId());
-        //save (deliveredObject) in database
+        //save (deliveredObject) in database if there will be another database for search service
     }
 }
