@@ -18,10 +18,8 @@ public class Sensor {
     private String name;
     private String owner;
     private String description;
-    @DBRef
     private Location location;
     private List<String> observedProperties;
-    @DBRef
     private Platform platform;
     private URL resourceURL;
 

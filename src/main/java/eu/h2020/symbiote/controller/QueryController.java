@@ -3,6 +3,7 @@ package eu.h2020.symbiote.controller;
 import eu.h2020.symbiote.model.Sensor;
 import eu.h2020.symbiote.repository.SensorRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +33,13 @@ public class QueryController {
                                                      @RequestParam(value = "id", required = false) String id,
                                                      @RequestParam(value = "description", required = false) String description,
                                                      @RequestParam(value = "location_name", required = false) String locationName,
+                                                     @RequestParam(value = "location_point", required = false) GeoJsonPoint locationPoint,
+                                                     @RequestParam(value = "max_distance", required = false) Integer maxDistance,
                                                      @RequestParam(value = "observed_property", required = false) String observedProperty
     ) {
 
         List<Sensor> listOfSensors = sensorRepositoryInterfaceImpl.search(platformId, platformName, owner, name,
-                id, description, locationName, observedProperty);
+                id, description, locationName, locationPoint, maxDistance, observedProperty);
 
         List<String> listOfResourcesIds = listOfSensors.stream()
                 .map(Sensor::getId)

@@ -1,8 +1,12 @@
 package eu.h2020.symbiote.repository;
 
 import eu.h2020.symbiote.model.Sensor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -15,11 +19,15 @@ import java.util.List;
 @Repository
 public class SensorRepositoryImpl implements SensorRepositoryCustom {
 
+    private static final Integer DEFAULT_MAX_DISTANCE = Integer.valueOf(100);
+
+    private static Log log = LogFactory.getLog(SensorRepositoryImpl.class);
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
     public List<Sensor> search(String platformId, String platformName, String owner, String name, String id,
-                               String description, String locationName, String observedProperty) {
+                               String description, String locationName, GeoJsonPoint locationPoint, Integer maxDistance, String observedProperty) {
 
         Query query = new Query();
 
@@ -44,11 +52,19 @@ public class SensorRepositoryImpl implements SensorRepositoryCustom {
         if (locationName != null) {
             query.addCriteria(Criteria.where("location.name").is(locationName));
         }
+        if( locationPoint != null ) {
+            log.info("Searching for location point" + locationPoint);
+//            log.info("      X: " + locationPoint.getX() + "     Y: " + locationPoint.getY() );
+//            Point pt = new Point(-73.99171d, 40.738868d);
+            Integer distance = maxDistance!=null?maxDistance:DEFAULT_MAX_DISTANCE;
+
+            query.addCriteria(Criteria.where("location.point").near(locationPoint).maxDistance( distance));
+        }
         if (observedProperty != null) {
             query.addCriteria(Criteria.where("observedProperties").in(observedProperty));
         }
 
-        query.fields().include("_id");
+//        query.fields().include("_id");
         List<Sensor> listOfSensors = mongoTemplate.find(query, Sensor.class);
         return listOfSensors;
     }

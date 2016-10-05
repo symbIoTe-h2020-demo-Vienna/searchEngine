@@ -21,7 +21,7 @@ public class SearchEngineApplication {
         try {
             MessagingSubscriptions.subscribeForSearchService();
         } catch (Exception e) {
-            log.error("Error occured during subscribing to search service", e);
+            log.error("Error occurred during subscribing to search service", e);
         }
     }
 }
