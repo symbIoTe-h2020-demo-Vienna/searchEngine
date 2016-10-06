@@ -54,8 +54,6 @@ public class SensorRepositoryImpl implements SensorRepositoryCustom {
         }
         if( locationPoint != null ) {
             log.info("Searching for location point" + locationPoint);
-//            log.info("      X: " + locationPoint.getX() + "     Y: " + locationPoint.getY() );
-//            Point pt = new Point(-73.99171d, 40.738868d);
             Integer distance = maxDistance!=null?maxDistance:DEFAULT_MAX_DISTANCE;
 
             query.addCriteria(Criteria.where("location.point").near(locationPoint).maxDistance( distance));

@@ -31,7 +31,7 @@ public class PlatformCreatedConsumer extends SymbioteMessageConsumer<Platform> {
      */
     @Override
     protected void handleEventObject(Platform deliveredObject) {
-        System.out.println("Search received message about created platform with id: " + deliveredObject.getId());
+        log.info("Search received message about created platform with id: " + deliveredObject.getId());
         //save (deliveredObject) in database if there will be another database for search service
     }
 }

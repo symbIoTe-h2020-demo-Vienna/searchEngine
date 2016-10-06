@@ -1,6 +1,8 @@
 package eu.h2020.symbiote.repository;
 
 import eu.h2020.symbiote.model.Platform;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -14,6 +16,8 @@ import org.springframework.util.Assert;
 @Component
 public class RepositoryManager {
 
+    private static Log log = LogFactory.getLog(RepositoryManager.class);
+
     private static PlatformRepository platformRepository;
 
     @Autowired
@@ -24,6 +28,6 @@ public class RepositoryManager {
 
     public static void saveToDatabase(Platform platform) {
         platformRepository.save(platform);
-        System.out.println("Platform saved!");
+        log.info("Platform saved!");
     }
 }

@@ -4,6 +4,8 @@ import eu.h2020.symbiote.model.Platform;
 import eu.h2020.symbiote.model.Sensor;
 import eu.h2020.symbiote.repository.PlatformRepository;
 import eu.h2020.symbiote.repository.SensorRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -22,6 +24,8 @@ import java.util.List;
 @RestController
 public class PlatformController {
 
+    private static Log log = LogFactory.getLog(PlatformController.class);
+
     @Autowired
     private PlatformRepository platformRepo;
 
@@ -38,7 +42,7 @@ public class PlatformController {
 
         Platform foundPlatform = platformRepo.findOne(platformId);
 
-        System.out.println("Response send with id: " + foundPlatform.getId());
+        log.info("Response send with id: " + foundPlatform.getId());
 
         return new ResponseEntity<Platform>(foundPlatform, HttpStatus.OK);
     }
@@ -53,16 +57,9 @@ public class PlatformController {
 
         List<Sensor> foundSensors = mongoTemplate.find(query, Sensor.class);
 
-        System.out.println("Response send! Found sensors: ");
-        System.out.println(foundSensors);
+        log.debug("Response send! Found sensors: ");
+        log.debug(foundSensors);
         return new ResponseEntity<List<Sensor>>(foundSensors, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = {"sensor", "/platform", "/core_api/sensors", "/core_api/platforms", "/core_api"})
-//    public
-//    @ResponseBody
-//    HttpEntity<String> error() {
-//        String message = "Method not allowed";
-//        return new ResponseEntity<String>(message, HttpStatus.METHOD_NOT_ALLOWED);
-//    }
 }

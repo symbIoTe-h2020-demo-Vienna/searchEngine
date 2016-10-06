@@ -32,7 +32,7 @@ public class ResourceCreatedConsumer extends SymbioteMessageConsumer<Sensor> {
      */
     @Override
     protected void handleEventObject(Sensor deliveredObject) {
-        System.out.println("Search received message about created resource with id: " + deliveredObject.getId());
+        log.info("Search received message about created resource with id: " + deliveredObject.getId());
         //save (deliveredObject) in database if there will be another database for search service
     }
 }
