@@ -1,0 +1,33 @@
+language: java
+
+env:
+  global:
+    secure: "TWFwmVUH7r2oyiELc8roanP8AQ/WJE/OFb+jGJk+LYQbXS2xuomS373j8/sRLmX0kWATSiRqzZK77n+UTNyJqtZekOf2pR2/Vor8kD3c+GP3T0GTdmcATyAlSFzsX1om6F00Ft8GL9ASaEbIjhO0dYJGF9ca8USO7RhSbG9dA2T/IPNXsZWGU90u4COKRymboPhrLyEK5OwD+yxAl2s+bFxL/3uX3fXF9sUgzvRnFoNZ+ch0OXD89Xe4vUQhTj/ojXzQNyQmgGe5jb5DWOXX6b8Ju+6Ik99K+6fPnmjNUtfhpXJQgKIGt+rTrTYPLbdSX6UnbVoEfiMqa8cq5JHgwWlVVmz1jXqCV140yeOwYKkSMzq5ZHj0uwlXiDFkiwWB1SO45OyOsMHLskAkMkdI9NwE0ztcqNLN+OVXj5XkJn+wowi/B5c/R5dMci3WezhoWrDX5Wq5Crd52i1bx/WMi28LYC7C9nNPLxuAa0B5pUCogrVb+x6q1sftzfJ4knQGVCqMTnRHRWUDX9vcAQ/ycLdMm1+qKndZH0+AaFcLbkwQ4JFAY3WVoD8S9ck2mm3wNIhfsdN7pGoYznbVQ8rRMTEIs6zRm0Xj3FcHrkrOBqb+8eISdcrkijQ05dmmQ2DmW9D9C+mHVzF7ZAIm6FN8Ct8RRO3bIE0g9613fP+ohx4="
+
+jdk:
+- oraclejdk8
+
+services:
+  - mongodb
+  - rabbitmq
+
+sudo: required
+
+branches:
+  only:
+  - staging
+
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+
+after_success:
+- chmod a+x merge_script.sh
+- BRANCHES_TO_MERGE_REGEX='staging' BRANCH_TO_MERGE_INTO=develop GITHUB_REPO=symbiote-h2020/searchEngine
+  ./merge_script.sh
+- bash <(curl -s https://codecov.io/bash)
